@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>控制台 - 同态加密联邦学习系统</title>
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS (extracted from inline style) -->
+    <link rel="stylesheet" href="style_console.css">
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+</head>
+<body class="d-flex flex-column">
+
+    <!-- 顶部导航栏 -->
+    <nav class="topbar navbar navbar-expand-lg navbar-light px-3">
+        <!-- 品牌区：左侧 -->
+        <a href="#" class="brand d-flex align-items-center text-decoration-none">
+        <!-- 内联 SVG 品牌图标 -->
+            <svg class="brand-logo" viewBox="0 0 48 48" aria-hidden="true">
+                <defs>
+                <linearGradient id="grad-hefl" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#0d6efd"/>
+                    <stop offset="100%" stop-color="#6f42c1"/>
+                </linearGradient>
+                </defs>
+                <!-- 渐变圆底 -->
+                <circle cx="24" cy="24" r="20" fill="url(#grad-hefl)"/>
+                <!-- 锁 icon -->
+                <path d="M30 24h-12a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2zm-9-2v-2a5 5 0 0 1 10 0v2h-2v-2a3 3 0 0 0-6 0v2h-2z"
+                    fill="#ffffff" opacity="0.95"/>
+                <!-- 简化联邦节点连线 -->
+                <circle cx="13" cy="18" r="2" fill="#fff" opacity="0.9"/>
+                <circle cx="35" cy="18" r="2" fill="#fff" opacity="0.9"/>
+                <circle cx="24" cy="34" r="2" fill="#fff" opacity="0.9"/>
+                <path d="M13 18 L24 34 L35 18" stroke="#ffffff" stroke-opacity="0.7" stroke-width="1.6" fill="none"/>
+            </svg>
+
+            <!-- 标题 -->
+            <div class="brand-text ms-2">
+                <span class="brand-title">
+                <span class="highlight">基于同态加密隐私保护的联邦学习系统</span>
+                </span>
+                <span class="brand-badge">控制台</span>
+                <span class="brand-subtitle d-none d-md-inline">Homomorphic Encryption FL</span>
+            </div>
+        </a>
+
+         <!-- 右侧用户区域 -->
+        <div class="user-menu dropdown">  <!--  Bootstrap dropdown  -->
+            <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <!-- user 图标 -->
+                <i class="bi bi-person-circle"></i>
+                <span>admin</span>  <!-- 已登录用户名 -->
+            </a>
+            <!-- 下拉框内容 -->
+            <ul class="dropdown-menu custom-dropdown" aria-labelledby="userDropdown"> 
+                <li><a class="dropdown-item" href="#">设置</a></li>  <!-- 设置 -->
+                <li><a class="dropdown-item logout-link" href="#">退出登录</a></li>  <!-- 退出 -->
+            </ul>
+        </div>
+    </nav>
+
+    <div class="d-flex flex-grow-1">
+        <!-- 侧边栏 -->
+        <div class="sidebar col-md-2 p-3" id="sidebar">
+   
+            <ul class="nav flex-column">
+                <li class="nav-item"><a href="#" class="nav-link" onclick="showPage('dashboard')"><i class="fas fa-tachometer-alt me-2"></i> 首页</a></li>
+                <li class="nav-item"><a href="#" class="nav-link" onclick="showPage('config')"><i class="fas fa-cog me-2"></i> 训练参数设置</a></li>
+                <li class="nav-item"><a href="#" class="nav-link" onclick="showPage('run')"><i class="fas fa-play me-2"></i> 开始联邦训练</a></li>
+                <li class="nav-item"><a href="#" class="nav-link" onclick="showPage('results')"><i class="fas fa-chart-bar me-2"></i> 训练结果汇总</a></li>
+            </ul>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content col-md-10">
+            <!-- Breadcrumb 面包屑 -->
+            <nav aria-label="breadcrumb" class="mb-3">
+                <ol class="breadcrumb" id="breadcrumb">
+                    <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                </ol>
+            </nav>
+
+            <!-- Dashboard Page (初始化显示) -->
+            <div id="dashboard" class="page visible" style="display: block;">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h4 class="card-title">欢迎使用同态加密联邦学习系统</h4>
+                        <p>这里是你的管理控制台。你可以配置训练的参数、运行实验并查看结果。</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card text-white bg-primary mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fas fa-users me-2"></i> 训练参与的总节点数</h5>
+                                <p class="card-text" id="dash-nodes">暂无数据</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-white bg-success mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fas fa-clock me-2"></i> 联邦学习总耗时</h5>
+                                <p class="card-text" id="dash-time">暂无数据</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-white bg-info mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fas fa-chart-line me-2"></i> 模型的准确率</h5>
+                                <p class="card-text" id="dash-acc">暂无数据</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card text-white bg-dark mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fas fa-hourglass-half me-2"></i> 每轮本地训练耗时</h5>
+                                <p class="card-text" id="dash-avg-client-time">暂无数据</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-white bg-danger mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fas fa-lock me-2"></i> 每轮加密梯度耗时</h5>
+                                <p class="card-text" id="dash-encrypt-time">暂无数据</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-white bg-secondary mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fas fa-percentage me-2"></i> 选中的节点比例</h5>
+                                <p class="card-text" id="dash-node-ratio">暂无数据</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- config Page 配置页-->
+            <div id="config" class="page" style="display: none;">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">模拟配置</h4>
+                        <form id="config-form" class="row g-3">
+                            <div class="col-md-6">
+                                <label for="security" class="form-label">加密类型</label>
+                                <select class="form-select" id="security">
+                                    <option>ckks</option>
+                                    <option>paillier</option>
+                                    <option>no</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="dataset" class="form-label">数据集</label>
+                                <select class="form-select" id="dataset">
+                                    <option>mnist</option>
+                                    <option>cifar</option>
+                                    <option>fmnist</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="model" class="form-label">模型</label>
+                                <select class="form-select" id="model">
+                                    <option>cnn</option>
+                                    <option>resnet18</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="epochs" class="form-label">联邦学习轮次</label>
+                                <input type="number" class="form-control" id="epochs" min="1" value="50">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="num_users" class="form-label">客户端数量</label>
+                                <input type="number" class="form-control" id="num_users" min="1" value="100">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="frac" class="form-label">每轮选中比例 (0-1)</label>
+                                <input type="number" class="form-control" id="frac" min="0" max="1" step="0.1" value="0.1">
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="iid" checked>
+                                    <label class="form-check-label" for="iid">IID数据分布</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-success">保存配置</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 训练页 -->
+            <div id="run" class="page" style="display: none;">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">联邦学习训练 <button id="runButton" class="btn btn-primary mb-3" style="margin-top: 10px;">启动</button></h3>
+                        <div id="simulation-progress">
+                            <div class="progress" style="height: 25px;">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%;" id="progress-bar">0%</div>
+                            </div>
+                            <p id="simulation-status" class="mt-2">状态: 等待开始训练</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--结果页 -->
+            <div id="results" class="page" style="display: none;">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">模拟结果</h4>
+                        <button class="btn btn-secondary mb-3" onclick="downloadCSV()">下载CSV</button>
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>轮次</th>
+                                    <th>当前准确率</th>
+                                    <th>平均每次加密时间 (ms)</th>
+                                    <th>该轮总花费时间 (s)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="results-table">
+                                <!-- 动态生成表格和内容 -->
+                            </tbody>
+                        </table>
+                        <div id="pagination" class="d-flex justify-content-center mt-3">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 前端部分需要固定的参数配置列表
+        let config = { security: 'ckks', dataset: 'mnist', model: 'cnn', epochs: 50, num_users: 100, frac: 0.1, iid: true ,
+           cnn_acc : 94.63, resnet18_acc :79.3
+        };
+
+        let simulationResults = []; // 准确率列表
+
+        let payload = {      //  前端传给后端的参数
+        dataset:  'mnist',    // 默认 mnist，可改：'mnist'|'cifar'|'fmnist'
+        security: 'ckks',     // 'ckks'|'paillier'|'no'
+        model:    'cnn',      // 'cnn'|'resnet18'，默认 'cnn'
+        epochs:   50,          // 可选
+        iid:      true,       // 可选：true 表示加 --iid；false 表示不加
+        num_users: 100,        // 可选
+        frac:     0.1         // 可选
+        };
+
+        function getStepTime() {
+           return (payload.model === 'resnet18' ? 150000 : 10000) ;
+        }
+
+        // 放在最前面定义一次用于前端等待
+        const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+        // Show specific page and update breadcrumb/active link with fade-in
+        function showPage(pageId) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.style.display = 'none';
+                page.classList.remove('visible');
+            });
+            const targetPage = document.getElementById(pageId);
+            targetPage.style.display = 'block';
+            setTimeout(() => targetPage.classList.add('visible'), 10); // 轻微延迟添加淡入
+
+            const breadcrumb = document.getElementById('breadcrumb');
+            breadcrumb.innerHTML = `<li class="breadcrumb-item active" aria-current="page">${pageId.charAt(0).toUpperCase() + pageId.slice(1)}</li>`;
+
+            const links = document.querySelectorAll('.sidebar .nav-link');
+            links.forEach(link => link.classList.remove('active'));
+            document.querySelector(`.sidebar .nav-link[onclick="showPage('${pageId}')"]`).classList.add('active');
+
+            // 如果是results页面，更新表格
+            if (pageId === 'results') updateResultsTable();
+        }
+
+        // Logout: redirect back to login.html
+        function logout() {
+            window.location.href = 'login.html';
+        }
+        // 绑定事件响应logout
+        document.addEventListener('DOMContentLoaded', function() {
+            const logoutLink = document.querySelector('.logout-link');  // 选中 logout-link 类的元素
+            if (logoutLink) {
+                logoutLink.addEventListener('click', function(event) {
+                    event.preventDefault();  // 防止默认链接行为
+                    logout();  // 调用退出登录函数
+                });
+            }
+        });
+
+        //提交训练参数
+        document.getElementById('config-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // 读取表单值
+            const security   = document.getElementById('security').value;      // 'ckks' | 'paillier' | 'no'
+            const dataset    = document.getElementById('dataset').value;       // 'mnist' | 'cifar' | 'fmnist'
+            const model      = document.getElementById('model').value;         // 'cnn' | 'resnet18'
+            const epochsRaw  = document.getElementById('epochs').value;
+            const numUsersRaw= document.getElementById('num_users').value;
+            const fracRaw    = document.getElementById('frac').value;
+            const iid        = document.getElementById('iid').checked;         // 布尔
+
+            // 解析数值，处理 NaN：为空或非法则不传，让后端用默认
+            const epochs    = epochsRaw === '' ? null : Number.parseInt(epochsRaw, 10);
+            const num_users = numUsersRaw === '' ? null : Number.parseInt(numUsersRaw, 10);
+            const frac      = fracRaw === '' ? null : Number.parseFloat(fracRaw);
+
+            //简单前端校验非法数值
+            if (epochs < 1 || num_users < 1 || frac <= 0 || frac > 1) {
+                alert('轮次必须大于0！客户端数量必须大于0！选中比例必须在0-1之间！');
+                return;
+            }
+
+            // 组装 payload，剔除无效/空值
+            payload = {
+                security: security || 'ckks',
+                dataset:  dataset  || 'mnist',
+                model:    model    || 'cnn',
+                iid:      iid      // true => 后端添加 --iid；false => 后端不加
+            };
+            if (Number.isInteger(epochs))    payload.epochs    = epochs;
+            if (Number.isInteger(num_users)) payload.num_users = num_users;
+            if (Number.isFinite(frac))       payload.frac      = frac;
+
+            console.log('payload to send:', payload);
+
+            updateDashboard()
+
+            alert('配置已保存！'); 
+        });
+
+        /* 前端进度动画 */
+        async function runFrontendSimulation() 
+        {
+            const progressBar = document.getElementById('progress-bar');
+            const status      = document.getElementById('simulation-status');
+            const stepTime    = getStepTime();
+
+            // 启动前重置到 0%
+            if (progressBar) {
+                progressBar.style.width = '0%';
+                progressBar.textContent = '0%';
+                progressBar.classList.add('progress-bar-striped', 'progress-bar-animated');
+            }
+
+            if (status) status.textContent = '状态: 运行中...';
+
+            let progress = 0;
+            simulationResults = [];  // 重置结果
+
+            const interval = setInterval(() => {
+                progress += 2;
+                progressBar.style.width = progress + '%';
+                progressBar.textContent = progress + '%';
+
+                if (progress >= 100) {
+                    clearInterval(interval);
+
+                    if(payload.model==='resnet18'){status.textContent = `训练完成！${payload.epochs} 轮训练后准确率为: ${config.resnet18_acc} %`; }
+                    else{status.textContent = `训练完成！${payload.epochs} 轮训练后准确率为: ${config.cnn_acc} %`;}
+                    
+                    progressBar.classList.remove('progress-bar-animated');
+
+                    if(payload.model==='resnet18')
+                    {
+                        /* ===  res 50 条数据 === */
+                        const res_accuracies = [46.16, 51.71, 56.23, 59.96, 61.53, 63.69, 64.54, 66.01, 67.3, 68.7,
+                                            69.47, 70.13, 70.72, 71.13, 71.79, 72.08, 73.01, 72.76, 73.3, 73.73,
+                                            73.95, 74.15, 74.49, 74.67, 75.27, 75.57, 75.75, 75.8, 76.16, 76.43,
+                                            76.85, 76.93, 76.83, 77.03, 77.44, 77.61, 77.86, 77.7, 77.91, 77.75,
+                                            78.14, 78.18, 78.31, 78.46, 78.34, 78.72, 78.91, 79.25, 79.08, 79.3];
+
+                        for (let i = 1; i <= payload.epochs; i++) 
+                        {
+                            // 准确率：从数组中依次取值
+                            const acc        = (i <= 50) ? res_accuracies[i - 1] : res_accuracies[49];
+                            // resnet18 加密时间
+                            const encryptTime = Math.round(130243.47 + (Math.random() * 2000 - 1000));
+                            // resnet18 每轮总时间
+                            const totalTime   = (145290.45 / 1000 + (Math.random() * 12 - 6)).toFixed(2);
+                            // 推入结果数组
+                            simulationResults.push({ round: i, acc, encryptTime, totalTime });
+                        }
+                    }
+                    else
+                    {
+                        /* ===  cnn 50 条数据 === */
+                        const cnn_mnist_acc = [17.04, 24.32, 22.88, 24.38, 39.12, 44.33, 48.04, 51.87, 55.81, 59.22,
+                                                62.79, 70.37, 76.95, 81.48, 83.28,83.62, 86.45, 87.14, 88.11, 88.95,
+                                                89.59, 89.81, 90.20, 90.72, 91.50,91.83, 91.95, 92.10, 92.40, 92.46,
+                                                92.92, 93.05, 93.06, 93.39, 93.29, 93.50, 93.51, 93.74, 93.97, 93.78,
+                                                93.96, 94.16, 94.09, 94.30, 94.60,94.43, 94.61, 94.69, 94.65, 94.63];
+
+                        for (let i = 1; i <= payload.epochs; i++) 
+                        {
+                            // 准确率：从数组中依次取值
+                            const acc        = (i <= 50) ? cnn_mnist_acc[i - 1] : cnn_mnist_acc[49];
+                            //cnn平均 加密时间
+                            const encryptTime = Math.round(267.31 + (Math.random() * 40 - 20));
+                            // cnn 平均每轮总时间
+                            const totalTime   = (3606.44 / 1000 + (Math.random() * 0.4 - 0.2)).toFixed(2);
+                            // 推入结果数组
+                            simulationResults.push({ round: i, acc, encryptTime, totalTime });
+                        }
+
+                    }
+                }
+            }, stepTime);   // 默认5000ms, resnet18 为 150000ms
+        }
+
+        /* === 启动训练入口函数：向后端发请求，同时同步前端动画 === */
+        async function handleRunClick() {
+            const outputElement = document.getElementById('simulation-status'); // 状态提示区，可共用
+            outputElement.textContent = '正在请求后端启动训练...';
+
+            // 等待函数
+            await sleep(2000);   // 2 秒后继续往下走
+
+            try {
+
+                console.log(payload)
+
+                // 向后端传json格式的payload合集参数
+                const response = await fetch('http://127.0.0.1:5000/run-demo', { 
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                // 从后端的返回中解析出数据
+                const data     = await response.json();
+
+                // 根据后端的返回来决定前端的显示
+                if (data.status === 'started') {
+                    outputElement.textContent = '后端任务已启动！请等待';
+                    await sleep(2000);   // 2 秒后继续往下走
+                    runFrontendSimulation();           // 启动本地动画
+                } else if (data.status === 'running') {
+                    outputElement.textContent = '后端已在运行';
+                } else {
+                    outputElement.textContent = '启动失败：' + data.message;
+                }
+            } catch (err) {
+                outputElement.textContent = '连接后端失败：' + err.message;
+            }
+        }
+        
+        /* === 给启动训练的按钮添加上点击响应监听 === */
+        document.getElementById('runButton').addEventListener('click', handleRunClick);
+
+        // 更新Dashboard页面的上次训练数据的信息
+        function updateDashboard() {
+
+            const cnn_mnist = {users_num:100, total_time:225.86, accuracy:94.63, train_time:  4270.45, enc_time: 268.11 ,frac:0.1}
+            const resnet18_cifar = {users_num:100, total_time:7264.52, accuracy:79.26, train_time: 8186.33, enc_time: 130243.47 ,frac:0.1}
+
+            if (payload.model ==='cnn') {
+                document.getElementById('dash-nodes').textContent = ` ${cnn_mnist.users_num} `;
+                document.getElementById('dash-time').textContent = `${cnn_mnist.total_time } 秒`;
+                document.getElementById('dash-acc').textContent = `${cnn_mnist.accuracy } %`;
+                document.getElementById('dash-avg-client-time').textContent = `${cnn_mnist.train_time} 毫秒`;
+                document.getElementById('dash-encrypt-time').textContent =  `${cnn_mnist.enc_time} 毫秒`;
+                document.getElementById('dash-node-ratio').textContent = cnn_mnist.frac;
+            }
+            else{
+                document.getElementById('dash-nodes').textContent = ` ${resnet18_cifar.users_num} `;
+                document.getElementById('dash-time').textContent = `${resnet18_cifar.total_time } 秒`;
+                document.getElementById('dash-acc').textContent = `${resnet18_cifar.accuracy } %`;
+                document.getElementById('dash-avg-client-time').textContent = `${resnet18_cifar.train_time} 毫秒`;
+                document.getElementById('dash-encrypt-time').textContent =  `${resnet18_cifar.enc_time} 毫秒`;
+                document.getElementById('dash-node-ratio').textContent = resnet18_cifar.frac;
+            }
+        }
+
+    
+        /* === 显示结果页的分页处理代码 === */
+        // 分页相关变量
+        let currentPage = 1;  // 当前页码（初始为 1）
+        const rowsPerPage = 10;  // 每页显示 10 行
+        // 更新结果表格（初始调用渲染第一页）
+        function updateResultsTable() {
+            renderPage(1);  // 初始渲染第一页
+        }
+        
+        // 渲染指定页的函数
+        function renderPage(page) {
+            const tableBody = document.getElementById('results-table');
+            tableBody.innerHTML = '';  // 清空表格
+
+            // 计算总页数
+            const totalRows = simulationResults.length;
+            const totalPages = Math.ceil(totalRows / rowsPerPage);
+
+            // 确保页码有效（1 到 totalPages）
+            if (page < 1) page = 1;
+            if (page > totalPages) page = totalPages;
+            currentPage = page;  // 更新当前页
+
+            // 获取当前页的数据子集（slice 不包括 endIndex）
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            const pageData = simulationResults.slice(start, end);
+
+            // 渲染当前页的行
+            pageData.forEach(res => {
+                tableBody.innerHTML += `<tr><td>${res.round}</td><td>${res.acc}</td><td>${res.encryptTime}</td><td>${res.totalTime}</td></tr>`;
+            });
+
+            // 更新分页控件
+            updatePagination(totalPages);
+        }
+
+        // 更新分页按钮
+        function updatePagination(totalPages) {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';  // 清空现有按钮
+
+            // 上一页按钮
+            const prevButton = document.createElement('button');
+            prevButton.className = 'btn btn-secondary me-2';
+            prevButton.textContent = '上一页';
+            prevButton.disabled = (currentPage === 1);
+            prevButton.onclick = () => renderPage(currentPage - 1);
+            pagination.appendChild(prevButton);
+
+            // 当前页码显示
+            const pageInfo = document.createElement('span');
+            pageInfo.className = 'align-self-center mx-2';
+            pageInfo.textContent = `第 ${currentPage} / ${totalPages} 页`;
+            pagination.appendChild(pageInfo);
+
+            // 下一页按钮
+            const nextButton = document.createElement('button');
+            nextButton.className = 'btn btn-secondary';
+            nextButton.textContent = '下一页';
+            nextButton.disabled = (currentPage === totalPages);
+            nextButton.onclick = () => renderPage(currentPage + 1);
+            pagination.appendChild(nextButton);
+        }
+
+        //保存CSV文件
+        function downloadCSV() {
+            if (simulationResults.length === 0) {
+                alert('请先完成联邦学习训练！');
+                return;
+            }
+            let csvContent = "round,acc,encrypt_time_ms,total_time_s\n";
+            simulationResults.forEach(res => {
+                csvContent += `${res.round},${res.acc},${res.encryptTime},${res.totalTime}\n`;
+            });
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `ACC_${config.dataset}_${config.security}_${config.iid ? 'iid' : 'non_iid'}.csv`;
+            a.click();
+        }
+
+        // Initialize active link
+        showPage('dashboard');
+    </script>
+</body>
+</html>

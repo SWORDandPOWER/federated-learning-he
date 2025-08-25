@@ -1,0 +1,254 @@
+/* Custom UI styles extracted from original code */
+
+#simulation-status.mt-2 {
+  margin-top: 25px !important;
+}
+
+/* Body and layout */
+body {
+    min-height: 100vh;
+    background-color: #f8f9fa; /* Light background for better visibility */
+}
+
+/* Top navigation bar */
+.topbar {
+    background-color: #ffffff;
+    border-bottom: 1px solid #dee2e6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Sidebar */
+.sidebar {
+    background-color: #2d3945; /* Dark sidebar */
+    color: #ffffff;
+    height: 100%; /* Full height */
+    position: fixed; /* Always visible, no toggle */
+    width: 16.6667%; /* Matches col-md-2 */
+}
+
+.sidebar .nav-link {
+    color: #ffffff;
+    transition: background-color 0.3s;
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar .nav-link:hover {
+    background-color: #495057;
+}
+
+.sidebar .nav-link.active {
+    background-color: #007bff;
+}
+
+/* Content area */
+.content {
+    margin-left: 16.6667%; /* Offset for fixed sidebar */
+    padding: 20px;
+    background-color: #ffffff;
+}
+
+/* Page transitions (fade-in effect) */
+.page {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.page.visible {
+    opacity: 1;
+}
+
+/* Cards and other UI elements */
+.card {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.progress-bar {
+    transition: width 0.6s ease; /* Smooth progress animation */
+}
+
+
+/* 美化用户下拉菜单 */
+.custom-dropdown {
+    min-width: 150px; /* 最小宽度，避免太窄 */
+    border: none; /* 移除默认边框 */
+    border-radius: 8px; /* 圆角 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* 添加阴影，提升立体感 */
+    background-color: #ffffff; /* 白色背景 */
+    padding: 0.5rem 0; /* 内部间距 */
+    margin-top: 0 !important; /* 强制移除上间隙，紧贴导航栏 */
+    opacity: 0; /* 用于淡入动画 */
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; /* 稍慢的平滑过渡 */
+    transform: translateY(5px); /* 初始轻微向下偏移，动画时恢复 */
+    right: 0 !important; /* 强制右对齐 */
+    left: auto !important;
+}
+
+/* 下拉菜单显示时的动画 */
+.custom-dropdown.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 添加小箭头（向上指向） */
+.custom-dropdown::before {
+    content: '';
+    position: absolute;
+    top: -6px; /* 箭头位置 */
+    right: 10px; /* 箭头右对齐，调整此值以匹配“用户”位置（如果偏移，可改为15px等） */
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid #ffffff; /* 箭头颜色匹配菜单背景 */
+}
+
+/* 菜单项样式 */
+.custom-dropdown .dropdown-item {
+    padding: 0.75rem 1.5rem; /* 增加padding，提升点击舒适度 */
+    color: #333; /* 默认文字颜色为深灰，更自然 */
+    transition: background-color 0.3s, color 0.3s; /* hover 过渡 */
+}
+
+.custom-dropdown .dropdown-item:hover {
+    background-color: #f8f9fa; /* 浅灰 hover 背景 */
+    color: #007bff; /* 蓝色文字突出，仅hover时 */
+}
+
+
+/* 自定义标题样式：更大字体、加粗、带阴影 */
+.main-title {
+    font-size: 1.3em; /* 字体大小调整为 3em（约 48px，根据浏览器基础字体大小而定）。可以增大到 4em 或更多，如果需要更夸张的效果 */
+    font-weight: 700; /* Bolder weight for emphasis */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+    color: #333; /* 可选：设置字体颜色为深灰，提升对比度。您可以改为 #007bff（蓝色）或其他 */
+    transition: all 0.3s ease; /* 可选：添加平滑过渡效果，当 hover 时可以稍作变化 */
+}
+
+
+/* ====== Brand (topbar left) ====== */
+:root{
+  --brand-primary: #0d6efd;
+  --brand-secondary: #6f42c1;
+  --brand-dark: #2c3e50;
+  --brand-muted: #6c757d;
+}
+
+.topbar {
+  /* 若需要更紧凑可适当增删 padding */
+  padding: 0.5rem 1rem;
+}
+
+/* 品牌区整体 */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding-right: 16px;
+  margin-right: 12px;
+  border-right: 1px solid #e9ecef; /* 与右侧内容做轻分隔 */
+  transition: transform .2s ease;
+}
+
+/* 图标 */
+.brand-logo {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,.12));
+  transition: transform .2s ease, filter .2s ease;
+}
+
+/* 主标题 */
+.brand-title {
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: .2px;
+  color: var(--brand-dark);
+  line-height: 1.2;
+}
+
+/* 渐变高亮“同态加密”四字 */
+.brand-title .highlight {
+  background: linear-gradient(90deg, var(--brand-primary), var(--brand-secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* 英文副标题（可选） */
+.brand-subtitle {
+  font-size: .82rem;
+  color: var(--brand-muted);
+  margin-left: 10px;
+  padding-left: 10px;
+  border-left: 1px dashed #e9ecef;
+  white-space: nowrap;
+}
+
+/* 小徽标 */
+.brand-badge {
+  display: inline-block;
+  font-size: .74rem;
+  font-weight: 600;
+  color: var(--brand-primary);
+  background: rgba(13,110,253, .10);
+  border: 1px solid rgba(13,110,253, .18);
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-left: 8px;
+  vertical-align: text-top;
+}
+
+/* 交互反馈 */
+.topbar .brand:hover .brand-logo {
+  transform: scale(1.03);
+  filter: drop-shadow(0 2px 6px rgba(13,110,253,.25));
+}
+
+@media (max-width: 576px) {
+  .brand {
+    padding-right: 8px;
+    margin-right: 8px;
+  }
+  .brand-title {
+    font-size: .98rem;
+  }
+  .brand-badge,
+  .brand-subtitle {
+    display: none !important; /* 小屏保留主标题即可 */
+  }
+}
+
+/* 顶部导航栏：确保 Flex 支持（如果未有） */
+.topbar {
+    display: flex;  /* 如果原 CSS 未有，添加此以支持 justify-content-between */
+    justify-content: space-between;
+    align-items: center;
+    /* 原有样式保持不变 */
+}
+
+/* 用户菜单样式 */
+.user-menu {
+    position: relative;  /* 确保下拉相对定位 */
+}
+
+.user-menu .dropdown-toggle {
+    color: #333;  /* 用户名颜色 */
+    font-weight: 500;  /* 稍加粗 */
+    padding: 0.5rem 1rem;  /* 内部间距 */
+    transition: color 0.3s;  /* hover 效果 */
+}
+
+.user-menu .dropdown-toggle:hover {
+    color: #007bff;  /* hover 时变蓝 */
+}
+
+/* 增强现有 .custom-dropdown（已有箭头、动画等） */
+.custom-dropdown {
+    min-width: 150px;  /* 原有最小宽度 */
+    right: 0 !important;  /* 强制右对齐（覆盖 Bootstrap 默认） */
+    left: auto !important;
+    margin-top: 0 !important;  /* 紧贴顶部 */
+    /* 原有样式如 box-shadow、transition 等保持 */
+}

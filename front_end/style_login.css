@@ -1,0 +1,173 @@
+/* Custom styles for beautification */
+body {
+    background: linear-gradient(135deg, #f8f9fa 0%, #f0f0f0 100%); /* Lighter gray gradient for softer contrast */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Full height for vertical centering */
+}
+.login-container {
+    flex: 1;
+    display: flex;
+    align-items: center; /* Vertical center */
+    justify-content: center; /* Horizontal center */
+}
+.login-card-wrapper {
+    max-width: 400px; /* Slightly wider for better proportion */
+    width: 100%; /* Responsive */
+}
+.card {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Deeper shadow for depth */
+    border-radius: 15px; /* Larger rounded corners */
+    background-color: #ffffff; /* Pure white background */
+    padding: 2rem; /* Increased padding for breathing room */
+}
+.card-title {
+    font-size: 2rem; /* Larger title */
+    font-weight: 600; /* Semi-bold */
+    color: #333; /* Dark gray */
+    text-align: center;
+    margin-bottom: 0.5rem; /* Space below title */
+}
+.card-subtitle {
+    font-size: 0.9rem; /* Small subtitle */
+    color: #6c757d; /* Muted gray */
+    text-align: center;
+    margin-bottom: 1.5rem; /* Space below subtitle */
+}
+.form-label {
+    font-size: 0.9rem; /* Small gray labels */
+    color: #6c757d; /* Muted gray */
+    margin-bottom: 0.5rem; /* Space below label */
+}
+.form-control {
+    border-radius: 0.5rem; /* Rounded inputs */
+    border: 1px solid #ddd; /* Light border */
+    padding: 0.75rem; /* Comfortable padding */
+    margin-bottom: 1rem; /* Space between inputs */
+}
+.forgot-password {
+    text-align: right;
+    margin-bottom: 1rem;
+}
+.forgot-password a {
+    font-size: 0.875rem; /* Unified small size */
+    color: #0d6efd; /* Blue link */
+    text-decoration: none;
+}
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+.btn-primary {
+    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%); /* Blue gradient */
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    font-size: 1rem;
+    transition: background 0.3s, transform 0.2s; /* Hover effects */
+}
+.btn-primary:hover {
+    background: linear-gradient(135deg, #0a58ca 0%, #084298 100%); /* Darker on hover */
+    transform: scale(1.02); /* Slight zoom */
+}
+.register-link {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #6c757d; /* Muted gray text */
+}
+.register-link a {
+    font-size: 0.875rem; /* Unified small size */
+    color: #0d6efd; /* Blue link, matching forgot password */
+    text-decoration: none;
+}
+.register-link a:hover {
+    text-decoration: underline;
+}
+.social-login-title {
+    font-size: 0.9rem;
+    color: #6c757d; /* Muted gray */
+    text-align: center;
+    margin: 1rem 0 0.5rem;
+}
+.social-login {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+.social-btn {
+    background-color: #ffffff; /* White background */
+    border: 1px solid #ddd; /* Light border */
+    border-radius: 50%; /* Circular */
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s;
+}
+.social-btn:hover {
+    background-color: #e9ecef; /* Hover lighten */
+}
+.social-btn i {
+    font-size: 1.2rem;
+    color: #6c757d; /* Gray icons */
+}
+.social-btn svg {
+    width: 1.2rem; /* Match i size */
+    height: 1.2rem;
+    fill: #6c757d; /* Gray color */
+}
+#login-error {
+    animation: fadeIn 0.5s; /* Fade-in animation for error */
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+/* Optimized Header Styles (back to light color, single tone) */
+header {
+    background-color: #f8f9fa; /* Single light gray, clean and modern */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); /* Light shadow for flat design */
+    padding: 8px 0; /* Compact padding to not dominate */
+    text-align: center;
+    border-bottom: 1px solid #ddd; /* Subtle light divider line */
+    border-bottom-left-radius: 10px; /* Rounded bottom */
+    border-bottom-right-radius: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; /* Modern system font stack */
+    transition: box-shadow 0.3s ease; /* Smooth hover shadow */
+}
+header:hover {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Subtle hover for interactivity */
+}
+header h1 {
+    font-size: 2.25rem; /* Slightly smaller for balance */
+    font-weight: 700; /* Bolder weight for emphasis */
+    color: #007bff; /* Bootstrap blue for vibrancy */
+    margin: 0;
+    letter-spacing: 0.5px; /* Slight spacing for readability */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+}
+header p {
+    font-size: 0.9rem; /* Smaller slogan */
+    color: #6c757d; /* Muted gray */
+    margin: 0;
+    margin-top: 5px; /* Slight space between h1 and p */
+}
+/* Optimized Footer */
+footer {
+    background-color: #343a40;
+    color: white;
+    display: flex; /* Flex for centering */
+    align-items: center; /* Vertical center */
+    justify-content: center; /* Horizontal center */
+    height: 40px; /* Fixed height for compactness */
+    padding: 5px; /* Reduced padding to shorten borders */
+    font-size: 0.9rem; /* Slightly smaller text */
+}
+footer p {
+    margin: 0; /* Remove default margins for perfect vertical centering */
+}
